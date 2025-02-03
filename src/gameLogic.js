@@ -53,3 +53,81 @@ function updatePlayer(character) {
         }
     }
 }
+
+function updateSpider(character) {
+    if (character.nextMovementTimer.value === 0) {
+        character.nextMovementTimer.value = 0.2;
+
+        let isThereIntersection = !(((globals.map[character.mapRowIndex][character.mapColIndex - 1] === BlockID.WALL) && (globals.map[character.mapRowIndex][character.mapColIndex + 1] === BlockID.WALL)) || ((globals.map[character.mapRowIndex - 1][character.mapColIndex] === BlockID.WALL) && (globals.map[character.mapRowIndex + 1][character.mapColIndex] === BlockID.WALL)));
+
+        if (!isThereIntersection) {
+            if (globals.map[character.mapRowIndex][character.mapColIndex - 1] !== BlockID.WALL) {
+                character.mapColIndex--;
+                character.currentMovementDirection = "LEFTWARDS";
+            } else if (globals.map[character.mapRowIndex][character.mapColIndex + 1] !== BlockID.WALL) {
+                character.mapColIndex++;
+                character.currentMovementDirection = "RIGHTWARDS";
+            } else if (globals.map[character.mapRowIndex - 1][character.mapColIndex] !== BlockID.WALL) {
+                character.mapRowIndex--;
+                character.currentMovementDirection = "UPWARDS";
+            } else if (globals.map[character.mapRowIndex + 1][character.mapColIndex] !== BlockID.WALL) {
+                character.mapRowIndex++;
+                character.currentMovementDirection = "DOWNWARDS";
+            }
+        } else {
+            let possibleMovements = [];
+            let randomMovement;
+
+            switch (character.currentMovementDirection) {
+                case "LEFTWARDS":
+                case "RIGHTWARDS":
+                    if (globals.map[character.mapRowIndex - 1][character.mapColIndex] !== BlockID.WALL) {
+                        possibleMovements.push("UPWARDS");
+                    }
+                    
+                    if (globals.map[character.mapRowIndex + 1][character.mapColIndex] !== BlockID.WALL) {
+                        possibleMovements.push("DOWNWARDS");
+                    }
+
+                    randomMovement = possibleMovements[Math.floor(Math.random() * possibleMovements.length)];
+
+                    if (randomMovement === "UPWARDS") {
+                        character.mapRowIndex--;
+                        character.currentMovementDirection = "UPWARDS";
+                    } else {
+                        character.mapRowIndex++;
+                        character.currentMovementDirection = "DOWNWARDS";
+                    }
+
+                    break;
+                
+                case "UPWARDS":
+                case "DOWNWARDS":
+                    if (globals.map[character.mapRowIndex][character.mapColIndex - 1] !== BlockID.WALL) {
+                        possibleMovements.push("LEFTWARDS");
+                    }
+                    
+                    if (globals.map[character.mapRowIndex][character.mapColIndex + 1] !== BlockID.WALL) {
+                        possibleMovements.push("RIGHTWARDS");
+                    }
+
+                    randomMovement = possibleMovements[Math.floor(Math.random() * possibleMovements.length)];
+
+                    if (randomMovement === "LEFTWARDS") {
+                        character.mapColIndex--;
+                        character.currentMovementDirection = "LEFTWARDS";
+                    } else {
+                        character.mapColIndex++;
+                        character.currentMovementDirection = "RIGHTWARDS";
+                    }
+            }
+        }
+    } else {
+        character.nextMovementTimer.timeChangeCounter += globals.deltaTime;
+    
+        if (character.nextMovementTimer.timeChangeCounter >= character.nextMovementTimer.timeChangeValue) {
+            character.nextMovementTimer.value -= 0.2;
+            character.nextMovementTimer.timeChangeCounter = 0;
+        }
+    }
+}

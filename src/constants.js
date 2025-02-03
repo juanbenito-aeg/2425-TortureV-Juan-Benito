@@ -14,8 +14,8 @@ const BlockUnicode = {
 
 // |||||||||||| ELEMENT IDENTIFIER
 const ElementID = {
-    MONEY: 0,
-    HEART: 1,
+    MONEY: 2,
+    HEART: 3,
 };
 
 // |||||||||||| ELEMENT'S UNICODE
@@ -26,8 +26,8 @@ const ElementUnicode = {
 
 // |||||||||||| CHARACTER IDENTIFIER
 const CharacterID = {
-    PLAYER: 0,
-    SPIDER: 1,
+    PLAYER: 4,
+    SPIDER: 5,
 };
 
 // |||||||||||| CHARACTER'S UNICODE

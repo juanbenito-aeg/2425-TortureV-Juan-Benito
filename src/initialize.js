@@ -1,4 +1,5 @@
 import Character from "./Character.js";
+import Spider from "./Spider.js";
 import Timer from "./Timer.js";
 import globals from "./globals.js";
 import { FPS, BlockID, CharacterID } from "./constants.js";
@@ -62,6 +63,7 @@ function initVars() {
 
 function initCharacters() {
     initPlayer();
+    initSpider();
 }
 
 function initPlayer() {
@@ -78,6 +80,43 @@ function initPlayer() {
     const player = new Character(CharacterID.PLAYER, mapRowIndex, mapColIndex, nextMovementTimer);
 
     globals.characters.push(player);
+}
+
+function initSpider() {
+    // |||||||||||| POSITION THE SPIDER ON THE MAP
+    
+    const possibleMapRowIndexes = [1, 10];
+    const possibleMapColIndexes = [1, 15];
+
+    const randomMapRowIndex = possibleMapRowIndexes[Math.floor(Math.random() * possibleMapRowIndexes.length)];
+    const randomMapColIndex = possibleMapColIndexes[Math.floor(Math.random() * possibleMapRowIndexes.length)];
+
+    globals.map[randomMapRowIndex][randomMapColIndex] = CharacterID.SPIDER;
+
+    const nextMovementTimer = new Timer(0.2, 0.2);
+
+    const spider = new Spider(CharacterID.SPIDER, randomMapRowIndex, randomMapColIndex, nextMovementTimer);
+
+    // |||||||||||| CHOOSE RANDOM MOVEMENT DIRECTION
+
+    let possibleMovements = [];
+
+    if (globals.map[spider.mapRowIndex][spider.mapColIndex - 1] !== BlockID.WALL) {
+        possibleMovements.push("LEFTWARDS");
+    }
+    if (globals.map[spider.mapRowIndex][spider.mapColIndex + 1] !== BlockID.WALL) {
+        possibleMovements.push("RIGHTWARDS");
+    }
+    if (globals.map[spider.mapRowIndex - 1][spider.mapColIndex] !== BlockID.WALL) {
+        possibleMovements.push("UPWARDS");
+    }
+    if (globals.map[spider.mapRowIndex + 1][spider.mapColIndex] !== BlockID.WALL) {
+        possibleMovements.push("DOWNWARDS");
+    }
+
+    spider.currentMovementDirection = possibleMovements[Math.floor(Math.random() * possibleMovements.length)];
+
+    globals.characters.push(spider);
 }
 
 function initEvents() {
