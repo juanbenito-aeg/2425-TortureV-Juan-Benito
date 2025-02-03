@@ -1,12 +1,12 @@
 import globals from "./globals.js";
-import { BlockID, BlockUnicode, CharacterID, CharacterUnicode } from "./constants.js";
+import { BlockID, BlockUnicode, ElementID, ElementUnicode } from "./constants.js";
 
 export default function render() {
     // |||||||||||| CLEAR SCREEN
     globals.ctx.clearRect(0, 0, globals.canvas.width, globals.canvas.height);
     
     renderMap();
-    renderCharacters();
+    renderElements();
 }
 
 function renderMap() {
@@ -29,27 +29,31 @@ function renderMap() {
     }
 }
 
-function renderCharacters() {
+function renderElements() {
     const blockSize = 16;
 
     globals.ctx.font = "14px emulogic";
 
-    for (let i = 0; i < globals.characters.length; i++) {
-        const currentCharacterXCoordinate = globals.mapInitialXCoordinate + (globals.characters[i].mapColIndex * blockSize);
-        const currentCharacterYCoordinate = globals.mapInitialYCoordinate + ((globals.characters[i].mapRowIndex + 1) * blockSize);
+    for (let i = 0; i < globals.elements.length; i++) {
+        const currentElementXCoordinate = globals.mapInitialXCoordinate + (globals.elements[i].mapColIndex * blockSize);
+        const currentElementYCoordinate = globals.mapInitialYCoordinate + ((globals.elements[i].mapRowIndex + 1) * blockSize);
         
-        let currentCharacterUnicode;
+        let currentElementUnicode;
         
-        switch (globals.characters[i].id) {
-            case CharacterID.PLAYER:
-                currentCharacterUnicode = CharacterUnicode.PLAYER;
+        switch (globals.elements[i].id) {
+            case ElementID.PLAYER:
+                currentElementUnicode = ElementUnicode.PLAYER;
                 break;
             
-            case CharacterID.SPIDER:
-                currentCharacterUnicode = CharacterUnicode.SPIDER;
+            case ElementID.SPIDER:
+                currentElementUnicode = ElementUnicode.SPIDER;
+                break;
+            
+            case ElementID.MONEY:
+                currentElementUnicode = ElementUnicode.MONEY;
                 break;
         }
 
-        globals.ctx.fillText(currentCharacterUnicode, currentCharacterXCoordinate, currentCharacterYCoordinate);
+        globals.ctx.fillText(currentElementUnicode, currentElementXCoordinate, currentElementYCoordinate);
     }
 }

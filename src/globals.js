@@ -21,5 +21,5 @@ export default {
     mapInitialXCoordinate: 0,
     mapInitialYCoordinate: 0,
 
-    characters: [],
+    elements: [],
 };

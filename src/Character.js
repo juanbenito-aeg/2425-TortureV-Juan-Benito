@@ -1,8 +1,9 @@
-export default class Character {
+import Element from "./Element.js";
+
+export default class Character extends Element {
     constructor(id, mapRowIndex, mapColIndex, nextMovementTimer) {
-        this.id                 = id;
-        this.mapRowIndex        = mapRowIndex;
-        this.mapColIndex        = mapColIndex;
+        super(id, mapRowIndex, mapColIndex);
+
         this.nextMovementTimer  = nextMovementTimer;
     }
 }

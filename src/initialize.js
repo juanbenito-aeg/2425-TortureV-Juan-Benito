@@ -1,8 +1,9 @@
+import Element from "./Element.js";
 import Character from "./Character.js";
 import Spider from "./Spider.js";
 import Timer from "./Timer.js";
 import globals from "./globals.js";
-import { FPS, BlockID, CharacterID } from "./constants.js";
+import { FPS, BlockID, ElementID } from "./constants.js";
 import { keydownHandler, keyupHandler } from "./events.js";
 
 function initEssentials() {
@@ -58,12 +59,13 @@ function initVars() {
     globals.mapInitialXCoordinate = 40;
     globals.mapInitialYCoordinate = 30;
 
-    initCharacters();
+    initElements();
 }
 
-function initCharacters() {
+function initElements() {
     initPlayer();
     initSpider();
+    initMoney();
 }
 
 function initPlayer() {
@@ -72,14 +74,14 @@ function initPlayer() {
     const mapRowIndex = 7;
     const mapColIndex = 8;
 
-    globals.map[mapRowIndex][mapColIndex] = CharacterID.PLAYER;
+    globals.map[mapRowIndex][mapColIndex] = ElementID.PLAYER;
 
     const nextMovementTimer = new Timer(0.2, 0.2);
     nextMovementTimer.value = 0;
 
-    const player = new Character(CharacterID.PLAYER, mapRowIndex, mapColIndex, nextMovementTimer);
+    const player = new Character(ElementID.PLAYER, mapRowIndex, mapColIndex, nextMovementTimer);
 
-    globals.characters.push(player);
+    globals.elements.push(player);
 }
 
 function initSpider() {
@@ -91,11 +93,11 @@ function initSpider() {
     const randomMapRowIndex = possibleMapRowIndexes[Math.floor(Math.random() * possibleMapRowIndexes.length)];
     const randomMapColIndex = possibleMapColIndexes[Math.floor(Math.random() * possibleMapRowIndexes.length)];
 
-    globals.map[randomMapRowIndex][randomMapColIndex] = CharacterID.SPIDER;
+    globals.map[randomMapRowIndex][randomMapColIndex] = ElementID.SPIDER;
 
     const nextMovementTimer = new Timer(0.2, 0.2);
 
-    const spider = new Spider(CharacterID.SPIDER, randomMapRowIndex, randomMapColIndex, nextMovementTimer);
+    const spider = new Spider(ElementID.SPIDER, randomMapRowIndex, randomMapColIndex, nextMovementTimer);
 
     // |||||||||||| CHOOSE RANDOM MOVEMENT DIRECTION
 
@@ -116,7 +118,32 @@ function initSpider() {
 
     spider.currentMovementDirection = possibleMovements[Math.floor(Math.random() * possibleMovements.length)];
 
-    globals.characters.push(spider);
+    globals.elements.push(spider);
+}
+
+function initMoney() {
+    // |||||||||||| POSITION THE MONEY ON THE MAP
+    
+    const possibleMapRowAndColIndexes = [];
+
+    for (let i = 0; i < globals.map.length; i++) {
+        for (let j = 0; j < globals.map[0].length; j++) {
+            if (globals.map[i][j] === BlockID.CORRIDOR) {
+                possibleMapRowAndColIndexes.push([i, j]);
+            }
+        }
+    }
+
+    const randomMapRowAndColIndexes = possibleMapRowAndColIndexes[Math.floor(Math.random() * possibleMapRowAndColIndexes.length)];
+
+    const randomMapRowIndex = randomMapRowAndColIndexes[0];
+    const randomMapColIndex = randomMapRowAndColIndexes[1];
+
+    globals.map[randomMapRowIndex][randomMapColIndex] = ElementID.MONEY;
+
+    const money = new Element(ElementID.MONEY, randomMapRowIndex, randomMapColIndex);
+
+    globals.elements.push(money);
 }
 
 function initEvents() {

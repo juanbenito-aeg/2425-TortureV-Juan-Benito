@@ -1,133 +1,133 @@
 import globals from "./globals.js";
-import { BlockID, CharacterID } from "./constants.js";
+import { BlockID, ElementID } from "./constants.js";
 
 export default function update() {
-    updateCharacters();
+    updateElements();
 }
 
-function updateCharacters() {
-    for (let i = 0; i < globals.characters.length; i++) {
-        updateCharacter(globals.characters[i]);
+function updateElements() {
+    for (let i = 0; i < globals.elements.length; i++) {
+        updateElement(globals.elements[i]);
     }
 }
 
-function updateCharacter(character) {
-    switch (character.id) {
-        case CharacterID.PLAYER:
-            updatePlayer(character);
+function updateElement(element) {
+    switch (element.id) {
+        case ElementID.PLAYER:
+            updatePlayer(element);
             break;
         
-        case CharacterID.SPIDER:
-            updateSpider(character);
+        case ElementID.SPIDER:
+            updateSpider(element);
             break;
     }
 }
 
-function updatePlayer(character) {
-    if (character.nextMovementTimer.value === 0) {
-        character.nextMovementTimer.value = 0.2;
+function updatePlayer(element) {
+    if (element.nextMovementTimer.value === 0) {
+        element.nextMovementTimer.value = 0.2;
 
         if (globals.action.moveLeft) {
-            if (globals.map[character.mapRowIndex][character.mapColIndex - 1] !== BlockID.WALL) {
-                character.mapColIndex--;
+            if (globals.map[element.mapRowIndex][element.mapColIndex - 1] !== BlockID.WALL) {
+                element.mapColIndex--;
             }
         } else if (globals.action.moveRight) {
-            if (globals.map[character.mapRowIndex][character.mapColIndex + 1] !== BlockID.WALL) {
-                character.mapColIndex++;
+            if (globals.map[element.mapRowIndex][element.mapColIndex + 1] !== BlockID.WALL) {
+                element.mapColIndex++;
             }
         } else if (globals.action.moveUp) {
-            if (globals.map[character.mapRowIndex - 1][character.mapColIndex] !== BlockID.WALL) {
-                character.mapRowIndex--;
+            if (globals.map[element.mapRowIndex - 1][element.mapColIndex] !== BlockID.WALL) {
+                element.mapRowIndex--;
             }
         } else if (globals.action.moveDown) {
-            if (globals.map[character.mapRowIndex + 1][character.mapColIndex] !== BlockID.WALL) {
-                character.mapRowIndex++;
+            if (globals.map[element.mapRowIndex + 1][element.mapColIndex] !== BlockID.WALL) {
+                element.mapRowIndex++;
             }
         }
     } else {
-        character.nextMovementTimer.timeChangeCounter += globals.deltaTime;
+        element.nextMovementTimer.timeChangeCounter += globals.deltaTime;
     
-        if (character.nextMovementTimer.timeChangeCounter >= character.nextMovementTimer.timeChangeValue) {
-            character.nextMovementTimer.value -= 0.2;
-            character.nextMovementTimer.timeChangeCounter = 0;
+        if (element.nextMovementTimer.timeChangeCounter >= element.nextMovementTimer.timeChangeValue) {
+            element.nextMovementTimer.value -= 0.2;
+            element.nextMovementTimer.timeChangeCounter = 0;
         }
     }
 }
 
-function updateSpider(character) {
-    if (character.nextMovementTimer.value === 0) {
-        character.nextMovementTimer.value = 0.2;
+function updateSpider(element) {
+    if (element.nextMovementTimer.value === 0) {
+        element.nextMovementTimer.value = 0.2;
 
-        let isThereIntersection = !(((globals.map[character.mapRowIndex][character.mapColIndex - 1] === BlockID.WALL) && (globals.map[character.mapRowIndex][character.mapColIndex + 1] === BlockID.WALL)) || ((globals.map[character.mapRowIndex - 1][character.mapColIndex] === BlockID.WALL) && (globals.map[character.mapRowIndex + 1][character.mapColIndex] === BlockID.WALL)));
+        let isThereIntersection = !(((globals.map[element.mapRowIndex][element.mapColIndex - 1] === BlockID.WALL) && (globals.map[element.mapRowIndex][element.mapColIndex + 1] === BlockID.WALL)) || ((globals.map[element.mapRowIndex - 1][element.mapColIndex] === BlockID.WALL) && (globals.map[element.mapRowIndex + 1][element.mapColIndex] === BlockID.WALL)));
 
         if (!isThereIntersection) {
-            if (globals.map[character.mapRowIndex][character.mapColIndex - 1] !== BlockID.WALL) {
-                character.mapColIndex--;
-                character.currentMovementDirection = "LEFTWARDS";
-            } else if (globals.map[character.mapRowIndex][character.mapColIndex + 1] !== BlockID.WALL) {
-                character.mapColIndex++;
-                character.currentMovementDirection = "RIGHTWARDS";
-            } else if (globals.map[character.mapRowIndex - 1][character.mapColIndex] !== BlockID.WALL) {
-                character.mapRowIndex--;
-                character.currentMovementDirection = "UPWARDS";
-            } else if (globals.map[character.mapRowIndex + 1][character.mapColIndex] !== BlockID.WALL) {
-                character.mapRowIndex++;
-                character.currentMovementDirection = "DOWNWARDS";
+            if (globals.map[element.mapRowIndex][element.mapColIndex - 1] !== BlockID.WALL) {
+                element.mapColIndex--;
+                element.currentMovementDirection = "LEFTWARDS";
+            } else if (globals.map[element.mapRowIndex][element.mapColIndex + 1] !== BlockID.WALL) {
+                element.mapColIndex++;
+                element.currentMovementDirection = "RIGHTWARDS";
+            } else if (globals.map[element.mapRowIndex - 1][element.mapColIndex] !== BlockID.WALL) {
+                element.mapRowIndex--;
+                element.currentMovementDirection = "UPWARDS";
+            } else if (globals.map[element.mapRowIndex + 1][element.mapColIndex] !== BlockID.WALL) {
+                element.mapRowIndex++;
+                element.currentMovementDirection = "DOWNWARDS";
             }
         } else {
             let possibleMovements = [];
             let randomMovement;
 
-            switch (character.currentMovementDirection) {
+            switch (element.currentMovementDirection) {
                 case "LEFTWARDS":
                 case "RIGHTWARDS":
-                    if (globals.map[character.mapRowIndex - 1][character.mapColIndex] !== BlockID.WALL) {
+                    if (globals.map[element.mapRowIndex - 1][element.mapColIndex] !== BlockID.WALL) {
                         possibleMovements.push("UPWARDS");
                     }
                     
-                    if (globals.map[character.mapRowIndex + 1][character.mapColIndex] !== BlockID.WALL) {
+                    if (globals.map[element.mapRowIndex + 1][element.mapColIndex] !== BlockID.WALL) {
                         possibleMovements.push("DOWNWARDS");
                     }
 
                     randomMovement = possibleMovements[Math.floor(Math.random() * possibleMovements.length)];
 
                     if (randomMovement === "UPWARDS") {
-                        character.mapRowIndex--;
-                        character.currentMovementDirection = "UPWARDS";
+                        element.mapRowIndex--;
+                        element.currentMovementDirection = "UPWARDS";
                     } else {
-                        character.mapRowIndex++;
-                        character.currentMovementDirection = "DOWNWARDS";
+                        element.mapRowIndex++;
+                        element.currentMovementDirection = "DOWNWARDS";
                     }
 
                     break;
                 
                 case "UPWARDS":
                 case "DOWNWARDS":
-                    if (globals.map[character.mapRowIndex][character.mapColIndex - 1] !== BlockID.WALL) {
+                    if (globals.map[element.mapRowIndex][element.mapColIndex - 1] !== BlockID.WALL) {
                         possibleMovements.push("LEFTWARDS");
                     }
                     
-                    if (globals.map[character.mapRowIndex][character.mapColIndex + 1] !== BlockID.WALL) {
+                    if (globals.map[element.mapRowIndex][element.mapColIndex + 1] !== BlockID.WALL) {
                         possibleMovements.push("RIGHTWARDS");
                     }
 
                     randomMovement = possibleMovements[Math.floor(Math.random() * possibleMovements.length)];
 
                     if (randomMovement === "LEFTWARDS") {
-                        character.mapColIndex--;
-                        character.currentMovementDirection = "LEFTWARDS";
+                        element.mapColIndex--;
+                        element.currentMovementDirection = "LEFTWARDS";
                     } else {
-                        character.mapColIndex++;
-                        character.currentMovementDirection = "RIGHTWARDS";
+                        element.mapColIndex++;
+                        element.currentMovementDirection = "RIGHTWARDS";
                     }
             }
         }
     } else {
-        character.nextMovementTimer.timeChangeCounter += globals.deltaTime;
+        element.nextMovementTimer.timeChangeCounter += globals.deltaTime;
     
-        if (character.nextMovementTimer.timeChangeCounter >= character.nextMovementTimer.timeChangeValue) {
-            character.nextMovementTimer.value -= 0.2;
-            character.nextMovementTimer.timeChangeCounter = 0;
+        if (element.nextMovementTimer.timeChangeCounter >= element.nextMovementTimer.timeChangeValue) {
+            element.nextMovementTimer.value -= 0.2;
+            element.nextMovementTimer.timeChangeCounter = 0;
         }
     }
 }
