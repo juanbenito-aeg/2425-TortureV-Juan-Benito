@@ -1,0 +1,22 @@
+@font-face {
+    font-family: emulogic;
+    src: url("../fonts/emulogic.ttf");
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameScreen {
+    width: 704px;
+    height: 512px;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
