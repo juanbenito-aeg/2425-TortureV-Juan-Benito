@@ -36,4 +36,4 @@ const CharacterUnicode = {
     SPIDER: "\u{1F577}",
 };
 
-export { FPS, BlockID, CharacterID };
+export { FPS, BlockID, BlockUnicode, CharacterID };
