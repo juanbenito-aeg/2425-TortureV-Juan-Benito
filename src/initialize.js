@@ -39,8 +39,12 @@ function initVars() {
         moveDown: false,
     };
 
-    // |||||||| INITIALIZE MAP & RELATED DATA
+    initMap();
 
+    initElements();
+}
+
+function initMap() {
     globals.map = [
         [BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.WALL],
         [BlockID.WALL, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.WALL, BlockID.WALL, BlockID.WALL, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.CORRIDOR, BlockID.WALL],
@@ -58,8 +62,6 @@ function initVars() {
 
     globals.mapInitialXCoordinate = 40;
     globals.mapInitialYCoordinate = 35;
-
-    initElements();
 }
 
 function initElements() {
