@@ -1,9 +1,12 @@
 import globals from "./globals.js";
 import { BlockID, ElementID } from "./constants.js";
-import { initMoney } from "./initialize.js";
+import { initSpider, initMoney } from "./initialize.js";
 
 export default function update() {
-    updateElements();
+    if (!globals.isGameOver) {
+        updateElements();
+        checkIfGameOver();
+    }
 }
 
 function updateElements() {
@@ -45,25 +48,43 @@ function updatePlayer(element) {
                 element.mapRowIndex++;
             }
         }
-
-        // |||||||||||| CHECK WHETHER THE PLAYER REACHED A MONEY OBJECT
-        for (let i = 1; i < globals.elements.length; i++) {
-            if (globals.elements[i].id === ElementID.MONEY) {
-                const money = globals.elements[i];
-
-                if ((element.mapRowIndex === money.mapRowIndex) && (element.mapColIndex === money.mapColIndex)) {
-                    globals.score += 100;
-            
-                    initMoney();
-                }
-            }
-        }
     } else {
         element.nextMovementTimer.timeChangeCounter += globals.deltaTime;
     
         if (element.nextMovementTimer.timeChangeCounter >= element.nextMovementTimer.timeChangeValue) {
             element.nextMovementTimer.value -= 0.2;
             element.nextMovementTimer.timeChangeCounter = 0;
+        }
+    }
+
+    // |||||||||||| CHECK WHETHER THE PLAYER TOUCHED A MONEY OR A SPIDER OBJECT
+    for (let i = 1; i < globals.elements.length; i++) {
+        switch (globals.elements[i].id) {
+            case ElementID.MONEY:
+                const money = globals.elements[i];
+    
+                if ((element.mapRowIndex === money.mapRowIndex) && (element.mapColIndex === money.mapColIndex)) {
+                    globals.score += 100;
+            
+                    initMoney();
+                }
+
+                break;
+            
+            case ElementID.SPIDER:
+                const spider = globals.elements[i];
+    
+                if ((element.mapRowIndex === spider.mapRowIndex) && (element.mapColIndex === spider.mapColIndex)) {
+                    globals.playerLifePoints--;
+            
+                    // |||||||| MOVE THE PLAYER TO THEIR INITIAL POSITION
+                    element.mapRowIndex = 7;
+                    element.mapColIndex = 8;
+
+                    initSpider();
+                }
+
+                break;
         }
     }
 }
@@ -143,5 +164,11 @@ function updateSpider(element) {
             element.nextMovementTimer.value -= 0.2;
             element.nextMovementTimer.timeChangeCounter = 0;
         }
+    }
+}
+
+function checkIfGameOver() {
+    if (globals.playerLifePoints === 0) {
+        globals.isGameOver = true;
     }
 }

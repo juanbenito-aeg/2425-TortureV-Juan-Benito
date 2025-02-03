@@ -77,12 +77,21 @@ function initPlayer() {
     const nextMovementTimer = new Timer(0.2, 0.2);
     nextMovementTimer.value = 0;
 
+    globals.playerLifePoints = 3;
+
     const player = new Character(ElementID.PLAYER, mapRowIndex, mapColIndex, nextMovementTimer);
 
     globals.elements.push(player);
 }
 
 function initSpider() {
+    // |||||||||||| CHECK WHETHER ALREADY EXISTS A SPIDER OBJECT, AND IF IT DOES, DELETE IT FROM THE "globals.elements" ARRAY
+    for (let i = 1; i < globals.elements.length; i++) {
+        if (globals.elements[i].id === ElementID.SPIDER) {
+            globals.elements.splice(i, 1);
+        }
+    }
+
     // |||||||||||| POSITION THE SPIDER ON THE MAP
     
     const possibleMapRowIndexes = [1, 10];
@@ -153,4 +162,4 @@ function initEvents() {
     window.addEventListener("keyup", keyupHandler, false);
 }
 
-export { initEssentials, initMoney };
+export { initEssentials, initSpider, initMoney };

@@ -18,10 +18,13 @@ export default {
     action: {},
 
     score: 0,
+    playerLifePoints: 0,
 
     map: [],
     mapInitialXCoordinate: 0,
     mapInitialYCoordinate: 0,
 
     elements: [],
+
+    isGameOver: false,
 };

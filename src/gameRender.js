@@ -8,6 +8,11 @@ export default function render() {
     renderMap();
     renderElements();
     renderScore();
+    renderLives();
+
+    if (globals.isGameOver) {
+        renderGameOverNotice();
+    }
 }
 
 function renderMap() {
@@ -66,4 +71,22 @@ function renderScore() {
     globals.ctx.fillText("SCORE", 40, 25);
     
     globals.ctx.fillText(globals.score, 122, 25);
+}
+
+function renderLives() {
+    globals.ctx.font = "12px emulogic";
+    globals.ctx.fillStyle = "white";
+    
+    globals.ctx.fillText("LIVES", 218, 25);
+    
+    globals.ctx.fillText(globals.playerLifePoints, 300, 25);
+}
+
+function renderGameOverNotice() {
+    globals.ctx.fillStyle = "blue";
+    globals.ctx.fillRect(104, 114, 145, 40);
+
+    globals.ctx.font = "12px emulogic";
+    globals.ctx.fillStyle = "white";
+    globals.ctx.fillText("GAME OVER", 121, 140);
 }
