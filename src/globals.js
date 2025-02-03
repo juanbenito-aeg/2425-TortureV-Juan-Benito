@@ -16,4 +16,6 @@ export default {
 
     // |||||||||||| OBJECT THAT HOLDS THE STATES OF THE KEYBOARD KEYS
     action: {},
+
+    map: [],
 };
