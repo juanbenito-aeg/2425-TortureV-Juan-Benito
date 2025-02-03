@@ -18,4 +18,8 @@ export default {
     action: {},
 
     map: [],
+    mapInitialXCoordinate: 0,
+    mapInitialYCoordinate: 0,
+
+    characters: [],
 };
