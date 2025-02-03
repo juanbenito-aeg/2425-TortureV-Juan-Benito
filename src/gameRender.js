@@ -7,6 +7,7 @@ export default function render() {
     
     renderMap();
     renderElements();
+    renderScore();
 }
 
 function renderMap() {
@@ -56,4 +57,13 @@ function renderElements() {
 
         globals.ctx.fillText(currentElementUnicode, currentElementXCoordinate, currentElementYCoordinate);
     }
+}
+
+function renderScore() {
+    globals.ctx.font = "12px emulogic";
+    globals.ctx.fillStyle = "white";
+    
+    globals.ctx.fillText("SCORE", 40, 25);
+    
+    globals.ctx.fillText(globals.score, 122, 25);
 }

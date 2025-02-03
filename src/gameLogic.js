@@ -1,5 +1,6 @@
 import globals from "./globals.js";
 import { BlockID, ElementID } from "./constants.js";
+import { initMoney } from "./initialize.js";
 
 export default function update() {
     updateElements();
@@ -42,6 +43,19 @@ function updatePlayer(element) {
         } else if (globals.action.moveDown) {
             if (globals.map[element.mapRowIndex + 1][element.mapColIndex] !== BlockID.WALL) {
                 element.mapRowIndex++;
+            }
+        }
+
+        // |||||||||||| CHECK WHETHER THE PLAYER REACHED A MONEY OBJECT
+        for (let i = 1; i < globals.elements.length; i++) {
+            if (globals.elements[i].id === ElementID.MONEY) {
+                const money = globals.elements[i];
+
+                if ((element.mapRowIndex === money.mapRowIndex) && (element.mapColIndex === money.mapColIndex)) {
+                    globals.score += 100;
+            
+                    initMoney();
+                }
             }
         }
     } else {

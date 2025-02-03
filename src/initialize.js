@@ -57,7 +57,7 @@ function initVars() {
     ];
 
     globals.mapInitialXCoordinate = 40;
-    globals.mapInitialYCoordinate = 30;
+    globals.mapInitialYCoordinate = 35;
 
     initElements();
 }
@@ -73,8 +73,6 @@ function initPlayer() {
     
     const mapRowIndex = 7;
     const mapColIndex = 8;
-
-    globals.map[mapRowIndex][mapColIndex] = ElementID.PLAYER;
 
     const nextMovementTimer = new Timer(0.2, 0.2);
     nextMovementTimer.value = 0;
@@ -92,8 +90,6 @@ function initSpider() {
 
     const randomMapRowIndex = possibleMapRowIndexes[Math.floor(Math.random() * possibleMapRowIndexes.length)];
     const randomMapColIndex = possibleMapColIndexes[Math.floor(Math.random() * possibleMapRowIndexes.length)];
-
-    globals.map[randomMapRowIndex][randomMapColIndex] = ElementID.SPIDER;
 
     const nextMovementTimer = new Timer(0.2, 0.2);
 
@@ -122,6 +118,13 @@ function initSpider() {
 }
 
 function initMoney() {
+    // |||||||||||| CHECK WHETHER ALREADY EXISTS A MONEY OBJECT, AND IF IT DOES, DELETE IT FROM THE "globals.elements" ARRAY
+    for (let i = 1; i < globals.elements.length; i++) {
+        if (globals.elements[i].id === ElementID.MONEY) {
+            globals.elements.splice(i, 1);
+        }
+    }
+
     // |||||||||||| POSITION THE MONEY ON THE MAP
     
     const possibleMapRowAndColIndexes = [];
@@ -139,8 +142,6 @@ function initMoney() {
     const randomMapRowIndex = randomMapRowAndColIndexes[0];
     const randomMapColIndex = randomMapRowAndColIndexes[1];
 
-    globals.map[randomMapRowIndex][randomMapColIndex] = ElementID.MONEY;
-
     const money = new Element(ElementID.MONEY, randomMapRowIndex, randomMapColIndex);
 
     globals.elements.push(money);
@@ -152,4 +153,4 @@ function initEvents() {
     window.addEventListener("keyup", keyupHandler, false);
 }
 
-export { initEssentials };
+export { initEssentials, initMoney };
